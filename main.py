@@ -34,6 +34,9 @@ def main():
 
     field = AsteroidField()
 
+    # Score Text
+    font = pygame.font.SysFont('arial', 24)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -52,6 +55,11 @@ def main():
                 if asteroid.is_colliding(shot):
                     asteroid.split()
                     shot.kill()
+                    player.add_score(asteroid.radius)
+
+        # Draw Score
+        score_surface = font.render(f"Score: {player.score}", True, "red")
+        screen.blit(score_surface, (0,0))
 
         for obj in drawable:
             obj.draw(screen)

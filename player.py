@@ -9,6 +9,13 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shot_cooldown_time_remaining = 0
+        self.score = 0
+
+    def add_score(self, value):
+        self.score += value
+
+    def remove_score(self, value):
+        self.score = max(0, self.score - value)
 
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
