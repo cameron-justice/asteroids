@@ -37,7 +37,7 @@ def main():
     # Score Text
     font = pygame.font.SysFont('arial', 24)
 
-    while True:
+    while player.lives > 0:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -48,9 +48,15 @@ def main():
             obj.update(dt)
 
         for asteroid in asteroids:
+
+            # Kill Player
             if asteroid.is_colliding(player):
-                print("Game Over!")
-                return
+                player.remove_life()
+                for asteroid in asteroids:
+                    asteroid.kill()
+                player.position = pygame.Vector2(x,y)
+
+            # Kill Asteroids
             for shot in shots:
                 if asteroid.is_colliding(shot):
                     asteroid.split()
@@ -60,6 +66,10 @@ def main():
         # Draw Score
         score_surface = font.render(f"Score: {player.score}", True, "red")
         screen.blit(score_surface, (0,0))
+
+        # Draw Lives
+        lives_surface = font.render(f"Lives: {player.lives}", True, "red")
+        screen.blit(lives_surface, (SCREEN_WIDTH - lives_surface.get_width(), 0))
 
         for obj in drawable:
             obj.draw(screen)
